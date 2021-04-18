@@ -9,7 +9,7 @@ urlpatterns = [
     # 判断手机号是否已注册
     re_path(r'mobiles/(?P<mobile>1[3-9]\d{9})/count/', views.MobileCountView.as_view()),
     # 发送短信验证码
-    re_path(r'sms_codes/(?P<mobile>1[3-9]\d{9})/$', views.SMSCodeView.as_view()),
+    re_path(r'sms_codes/(?P<mobile>1[3-9]\d{9})/', views.SMSCodeView.as_view()),
     # 注册用户
     path(r'users/', views.UserView.as_view()),
     # 账户 登录
@@ -26,5 +26,5 @@ urlpatterns = [
     # 查询所有省
     path(r'areas/', views.AreaListView.as_view()),
     # 查某个省/市
-    re_path(r'^areas/(?P<pk>\d+)/$', views.AreaDetailView.as_view()),
+    re_path(r'areas/(?P<pk>\d+)/', views.AreaDetailView.as_view()),
 ]

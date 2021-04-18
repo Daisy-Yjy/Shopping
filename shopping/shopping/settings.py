@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',  # DRF
 
     'users.apps.UsersConfig',  # 用户模块
+    'goods.apps.GoodsConfig',  # 商品模块
 ]
 
 
