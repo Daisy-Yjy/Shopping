@@ -2,7 +2,7 @@ import random
 from django_redis import get_redis_connection
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_jwt.settings import api_settings
@@ -11,8 +11,9 @@ from rest_framework.mixins import CreateModelMixin, UpdateModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
 
-from .models import User, Address
-from .serializers import CreateUserSerializer, UserAddressSerializer, UserDetailSerializer
+from .models import User, Address, Area
+from .serializers import CreateUserSerializer, UserAddressSerializer, UserDetailSerializer, SubsSerializer, \
+    AreaSerializer
 from libs.yuntongxun import sms
 
 
@@ -156,3 +157,27 @@ class AddressViewSet(CreateModelMixin, UpdateModelMixin, GenericViewSet):
         request.user.default_address = address
         request.user.save()
         return Response({'message': 'OK'}, status=status.HTTP_200_OK)
+
+
+class AreaListView(ListAPIView):
+    """查询所有省"""
+
+    serializer_class = AreaSerializer
+    queryset = Area.objects.filter(parent=None)
+
+    def get(self, request):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class AreaDetailView(RetrieveAPIView):
+    """查单一省市"""
+
+    def get(self, request, pk):
+        try:
+            area = Area.objects.get(id=pk)
+        except Area.DoesNotExist:
+            return Response({'message': '无效pk'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = SubsSerializer(area)
+        return Response(serializer.data)

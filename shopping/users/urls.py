@@ -23,4 +23,8 @@ urlpatterns = [
     path(r'addresses/<int:pk>/', views.AddressViewSet.as_view({'delete': 'destory', 'put': 'update'})),
     # 地址 修改 删除
     path(r'addresses/<int:pk>/status/', views.AddressViewSet.as_view({'put': 'status'})),
+    # 查询所有省
+    path(r'areas/', views.AreaListView.as_view()),
+    # 查某个省/市
+    re_path(r'^areas/(?P<pk>\d+)/$', views.AreaDetailView.as_view()),
 ]

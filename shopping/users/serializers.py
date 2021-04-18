@@ -3,7 +3,7 @@ from django_redis import get_redis_connection
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 
-from .models import User, Address
+from .models import User, Address, Area
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
@@ -116,5 +116,22 @@ class UserAddressSerializer(serializers.ModelSerializer):
         user = self.context['request'].user  # 获取用户模型对象
         validated_data['user'] = user
         return Address.objects.create(**validated_data)
+
+
+class AreaSerializer(serializers.ModelSerializer):
+    """省序列化器"""
+
+    class Meta:
+        model = Area
+        fields = ['id', 'name']
+
+
+class SubsSerializer(serializers.ModelSerializer):
+    """单一省市序列化器"""
+    subs = AreaSerializer(many=True)
+
+    class Meta:
+        model = Area
+        fields = ['id', 'name', 'subs']
 
 
