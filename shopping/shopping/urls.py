@@ -20,4 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path(r'', include('users.urls')),  # 用户模块
     path(r'', include('goods.urls')),  # 商品模块
+    path(r'', include('carts.urls')),  # 购物车模块
+    path(r'', include('orders.urls')),  # 订单模块
 ]

@@ -16,6 +16,8 @@ from .serializers import CreateUserSerializer, UserAddressSerializer, UserDetail
     AreaSerializer
 from libs.yuntongxun import sms
 
+from carts.utils import merge_cart_cookie_to_redis
+
 
 class UsernameCountView(APIView):
     """判断用户是否已注册"""
@@ -84,6 +86,8 @@ class UserAuthorizeView(ObtainJSONWebToken):
             token = serializer.object.get('token')
             response_data = jwt_response_payload_handler(token, user, request)
             response = Response(response_data)
+            # 账号登录时合并购物车
+            merge_cart_cookie_to_redis(request, user, response)
             return response
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -107,7 +111,10 @@ class LoginMobileView(APIView):
         token = jwt_encode_handler(payload)  # 传入载荷生成完整的jwt
         user.token = token
         response_data = {'user_id': user.id, 'username': user.username, 'token': token}
-        return Response(response_data)
+        response = Response(response_data)
+        # 账号登录时合并购物车
+        merge_cart_cookie_to_redis(request, user, response)
+        return response
 
 
 class UserDetailView(RetrieveAPIView):
@@ -181,3 +188,4 @@ class AreaDetailView(RetrieveAPIView):
             return Response({'message': '无效pk'}, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubsSerializer(area)
         return Response(serializer.data)
+

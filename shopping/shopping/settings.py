@@ -42,6 +42,8 @@ INSTALLED_APPS = [
 
     'users.apps.UsersConfig',  # 用户模块
     'goods.apps.GoodsConfig',  # 商品模块
+    'carts.apps.CartsConfig',  # 购物车模块
+    'orders.apps.OrdersConfig',  # 订单模块
 ]
 
 
