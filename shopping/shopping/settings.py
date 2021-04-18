@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+import datetime
 import os
 from pathlib import Path
 
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'goods.apps.GoodsConfig',  # 商品模块
     'carts.apps.CartsConfig',  # 购物车模块
     'orders.apps.OrdersConfig',  # 订单模块
+    'payments.apps.PaymentsConfig',  # 支付模块
 ]
 
 
@@ -223,7 +225,18 @@ REST_FRAMEWORK = {
     # 分页
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 5,  # 每页数目
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
 
 # 修改django认证系统的用户模型类
 AUTH_USER_MODEL = 'users.User'
+
+# JWT的有效期
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),  # JWT有效期
+}
+
+# 支付宝
+ALIPAY_APPID = '2021000117632694'
+ALIPAY_DEBUG = True  # 表示是沙箱环境还是真实支付环境
+ALIPAY_URL = 'https://openapi.alipaydev.com/gateway.do'
