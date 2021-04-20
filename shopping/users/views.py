@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import ObtainJSONWebToken
-from rest_framework.mixins import CreateModelMixin, UpdateModelMixin
+from rest_framework.mixins import CreateModelMixin, UpdateModelMixin, DestroyModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
 
@@ -58,7 +58,7 @@ class SMSCodeView(APIView):
         return Response({'message': 'OK'})
 
 
-class UserView(CreateAPIView):
+class UserCreateView(CreateAPIView):
     """用户注册"""
 
     serializer_class = CreateUserSerializer
@@ -75,7 +75,7 @@ def jwt_response_payload_handler(token, user=None, request=None):
     }
 
 
-class UserAuthorizeView(ObtainJSONWebToken):
+class UserLoginView(ObtainJSONWebToken):
     """自定义账号密码登录"""
 
     def post(self, request, *args, **kwargs):
@@ -127,11 +127,14 @@ class UserDetailView(RetrieveAPIView):
         return self.request.user
 
 
-class AddressViewSet(CreateModelMixin, UpdateModelMixin, GenericViewSet):
+class AddressViewSet(CreateModelMixin, UpdateModelMixin, DestroyModelMixin, GenericViewSet):
     """用户收货地址增删改"""
 
     permission_classes = [IsAuthenticated]
     serializer_class = UserAddressSerializer
+
+    def get_queryset(self):
+        return self.request.user.addresses.filter(is_deleted=False)
 
     def create(self, request, *args, **kwargs):
         user = request.user

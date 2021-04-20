@@ -56,7 +56,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
 
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError('两个密码不一致')
-        redis_conn = get_redis_connection('verify_codes')
+        redis_conn = get_redis_connection('sms_codes')
         mobile = attrs['mobile']
         real_sms_code = redis_conn.get('sms_%s' % mobile)
         if real_sms_code is None or attrs['sms_code'] != real_sms_code.decode():
