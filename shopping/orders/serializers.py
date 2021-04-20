@@ -99,7 +99,7 @@ class SaveOrderSerializer(serializers.ModelSerializer):
             except Exception:
                 # 回滚
                 transaction.savepoint_rollback(save_point)
-                raise serializers.ValidationError('库存不足')  # 订单提交失败,前端显示异常
+                raise serializers.ValidationError('库存不足')
             else:
                 transaction.savepoint_commit(save_point)
 

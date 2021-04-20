@@ -68,8 +68,8 @@ class CartView(APIView):
 
             # 将redis购物车数据格式转换成和cookie购物车数据格式一致
             cart_dict = {}
-            for sku_id_bytes, count_bytes in cart_redis_dict.items():  # 遍历hash中的所有键值对字典,
-                cart_dict[int(sku_id_bytes)] = {  # 包到字典中的数据注意类型转换
+            for sku_id_bytes, count_bytes in cart_redis_dict.items():
+                cart_dict[int(sku_id_bytes)] = {
                     'count': int(count_bytes),
                     'selected': sku_id_bytes in selecteds
                 }

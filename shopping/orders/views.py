@@ -49,11 +49,12 @@ class UserOrderView(ListAPIView):
     """查看订单"""
 
     serializer_class = UserOrderSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filter_fields = ['create_time', 'order_id', 'total_amount', 'pay_method', 'status']
     search_fields = ['create_time', 'order_id', 'total_amount', 'pay_method', 'status', 'skus']
 
     def get_queryset(self):
-        user = self.request.user
-        return OrderInfo.objects.filter(user=user)
+        # user = self.request.user
+        # return OrderInfo.objects.filter(user=user)
+        return OrderInfo.objects.filter(user_id=1)

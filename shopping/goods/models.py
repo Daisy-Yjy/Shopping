@@ -6,6 +6,7 @@ class GoodsCategory(models.Model):
 
     name = models.CharField(max_length=10, verbose_name='名称')
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, verbose_name='父类别')
+    url = models.CharField(max_length=100, verbose_name='商品类别链接')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
     update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")
 
@@ -23,7 +24,6 @@ class GoodsChannel(models.Model):
 
     group_id = models.IntegerField(verbose_name='组号')
     category = models.ForeignKey(GoodsCategory, on_delete=models.CASCADE, verbose_name='顶级商品类别')
-    url = models.CharField(max_length=50, verbose_name='频道页面链接')
     sequence = models.IntegerField(verbose_name='组内顺序')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
     update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")
@@ -42,7 +42,6 @@ class Brand(models.Model):
 
     name = models.CharField(max_length=20, verbose_name='名称')
     logo = models.ImageField(verbose_name='Logo图片')
-    first_letter = models.CharField(max_length=1, verbose_name='品牌首字母')
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
     update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")
 
@@ -213,3 +212,4 @@ class Content(models.Model):
 
     def __str__(self):
         return '%s: %s' % (self.category.name, self.title)
+

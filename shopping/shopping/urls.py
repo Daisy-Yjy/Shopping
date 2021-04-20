@@ -19,8 +19,8 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(r'users/', include('users.urls')),  # 用户模块
-    path(r'', include('goods.urls')),  # 商品模块
-    path(r'', include('carts.urls')),  # 购物车模块
-    path(r'', include('orders.urls')),  # 订单模块
-    path(r'', include('payments.urls')),  # 支付模块
+    path(r'goods/', include('goods.urls')),  # 商品模块
+    path(r'carts/', include('carts.urls')),  # 购物车模块
+    path(r'orders/', include('orders.urls')),  # 订单模块
+    path(r'payments/', include('payments.urls')),  # 支付模块
 ]

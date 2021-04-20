@@ -1,6 +1,6 @@
 from django_redis import get_redis_connection
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.generics import ListAPIView, CreateAPIView, GenericAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -36,12 +36,14 @@ class SKUDetailView(APIView):
         return Response(serializer.data)
 
 
-class UserBrowserHistoryView(CreateAPIView, GenericAPIView):
-    """商品浏览记录"""
+class UserBrowserHistoryView(CreateAPIView):
+    """商品浏览记录处理"""
+
     serializer_class = UserBrowserHistorySerializer
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+
         redis_conn = get_redis_connection('history')
         user = request.user
         # 获取redis中当前用户的浏览记录列表数据
@@ -53,3 +55,4 @@ class UserBrowserHistoryView(CreateAPIView, GenericAPIView):
             sku_list.append(sku)
         serializer = SKUSerializer(sku_list, many=True)
         return Response(serializer.data)
+

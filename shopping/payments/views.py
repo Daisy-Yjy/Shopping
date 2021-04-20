@@ -37,7 +37,7 @@ class PaymentView(APIView):
             out_trade_no=order_id,  # 马上要支付的订单编号
             total_amount=str(order.total_amount),  # 支付总金额, 不能为Decimal
             subject='Shopping%s' % order_id,  # 标题
-            return_url="http://127.0.0.1:8080/",  # 支付成功后的回调url
+            return_url="http://127.0.0.1:8000/payments/status/",  # 支付成功后的回调url
         )
         alipay_url = settings.ALIPAY_URL + '?' + order_string
         return Response({'alipay_url': alipay_url})
